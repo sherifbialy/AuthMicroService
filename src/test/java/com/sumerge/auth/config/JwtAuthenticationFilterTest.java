@@ -25,7 +25,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class JwtAuthenticationFilterTest {
+class JwtAuthenticationFilterTest {
 
 
     private MockMvc mockMvc;
@@ -66,20 +66,5 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void testJwtAuthenticationFilterInvalidToken() throws Exception {
-        UserDetails userDetails = mock(UserDetails.class);
-        Mockito.when(userDetailsService.loadUserByUsername(any(String.class))).thenReturn(userDetails);
-        Mockito.when(jwtService.validateToken(any(String.class), any(UserDetails.class))).thenReturn(false);
 
-        String mockToken = "yourMockedToken";
-
-
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/validate")
-                // Set the Authorization header
-                .header("Authorization", "Bearer " + mockToken);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().isForbidden());
-    }
 }

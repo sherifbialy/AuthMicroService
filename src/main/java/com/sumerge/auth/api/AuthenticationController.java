@@ -37,15 +37,7 @@ public class AuthenticationController {
     }
     @GetMapping("/validate")
     public void validate(){
-//        if(authenticationService.validate(validationRequest)){
-//            System.out.println("good");
-//            return ResponseEntity.ok(true);
-//
-//        }
-//        else {
-//            System.out.println("bad");
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
-//        }
+
     }
 
 }
