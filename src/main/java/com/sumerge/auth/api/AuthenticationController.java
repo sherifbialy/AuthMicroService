@@ -38,6 +38,8 @@ public class AuthenticationController {
     @GetMapping("/validate")
     public void validate(){
 
+        //this method authorises through verifying the token in the jwtFilter,
+        // hence only response status code is needed
     }
 
 }
