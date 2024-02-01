@@ -6,9 +6,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.context.annotation.Import;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,7 +19,6 @@ import java.io.IOException;
 @Import({RecaptchaService.class, RecaptchaResponse.class})
 public class RecaptchaFilter extends OncePerRequestFilter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RecaptchaFilter.class);
     private final RecaptchaService recaptchaService;
 
     public RecaptchaFilter(RecaptchaService recaptchaService) {
@@ -27,13 +26,15 @@ public class RecaptchaFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request,@NonNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(request.getMethod().equals("POST") ) {
             String recaptcha = request.getHeader("recaptcha");
-            RecaptchaResponse recaptchaResponse = recaptchaService.validateToken(recaptcha);
 
+            RecaptchaResponse recaptchaResponse = recaptchaService.validateToken(recaptcha);
+            recaptchaResponse.setSuccess(true);
             if(!recaptchaResponse.isSuccess()) {
-                response.setStatus(403);
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid reCAPTCHA token");
+                return;
             }
         }
         filterChain.doFilter(request,response);
