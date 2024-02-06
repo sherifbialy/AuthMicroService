@@ -1,6 +1,8 @@
 package com.sumerge.auth.api;
 
-import com.sumerge.auth.api.*;
+import com.sumerge.auth.api.DTO.AuthenticationRequest;
+import com.sumerge.auth.api.DTO.AuthenticationResponse;
+import com.sumerge.auth.api.DTO.RegisterRequest;
 import com.sumerge.auth.config.*;
 import com.sumerge.auth.user.*;
 import org.junit.jupiter.api.Test;
@@ -19,8 +21,7 @@ class AuthenticationServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private PasswordEncoder passwordEncoder;
+
 
     @Mock
     private JwtService jwtService;

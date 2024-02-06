@@ -1,41 +1,29 @@
 package com.sumerge.auth.api;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
 import com.sumerge.auth.TestConfig;
-import com.sumerge.auth.config.ApplicationConfig;
-import com.sumerge.auth.config.JwtAuthenticationFilter;
+import com.sumerge.auth.api.DTO.AuthenticationRequest;
+import com.sumerge.auth.api.DTO.AuthenticationResponse;
+import com.sumerge.auth.api.DTO.RegisterRequest;
+import com.sumerge.auth.config.filters.JwtAuthenticationFilter;
 import com.sumerge.auth.config.JwtService;
+import com.sumerge.auth.recaptcha.RecaptchaResponse;
+import com.sumerge.auth.recaptcha.RecaptchaService;
 import com.sumerge.auth.user.Role;
 import com.sumerge.auth.user.User;
-import com.sumerge.auth.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.io.IOException;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -49,6 +37,9 @@ class AuthenticationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    RecaptchaService recaptchaService;
 
     @MockBean
     private AuthenticationService authenticationService;
@@ -76,12 +67,15 @@ class AuthenticationControllerTest {
     @Test
     void registerLegalRequestShouldSucceedWithToken() throws Exception {
 
+
         String jsonRequestBody = "{\n" +
                 "  \"firstName\": \"John\",\n" +
                 "  \"lastName\": \"Doe\",\n" +
                 "  \"email\": \"john.doe@example.com\",\n" +
                 "  \"password\": \"securePassword123\"\n" +
                 "}";
+        RecaptchaResponse recaptchaResponse=new RecaptchaResponse(true,"","",0.0,"");
+        Mockito.when(recaptchaService.validateToken(Mockito.any())).thenReturn(recaptchaResponse);
         when(authenticationService.register(any(RegisterRequest.class))).thenReturn(new AuthenticationResponse("token"));
 
         mockMvc.perform(
@@ -99,12 +93,14 @@ class AuthenticationControllerTest {
 
         String jsonRequestBody = "";
        //Mockito.when(authenticationService.register(any(RegisterRequest.class))).thenThrow(new NullPointerException("No Body"));
-
+        RecaptchaResponse recaptchaResponse=new RecaptchaResponse(true,"","",0.0,"");
+        Mockito.when(recaptchaService.validateToken(Mockito.any())).thenReturn(recaptchaResponse);
         mockMvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/auth/register")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(jsonRequestBody)
+                                .header("recaptcha","dummy")
                 )
                 .andExpect(status().is4xxClientError());
 
@@ -115,12 +111,14 @@ class AuthenticationControllerTest {
 
         String jsonRequestBody = "";
 
-
+        RecaptchaResponse recaptchaResponse=new RecaptchaResponse(true,"","",0.0,"");
+        Mockito.when(recaptchaService.validateToken(Mockito.any())).thenReturn(recaptchaResponse);
         mockMvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/auth/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(jsonRequestBody)
+
                 )
                 .andExpect(status().is4xxClientError());
 
@@ -134,12 +132,14 @@ class AuthenticationControllerTest {
                 "  \"password\": \"securePassword123\"\n" +
                 "}";
         when(authenticationService.login(any(AuthenticationRequest.class))).thenReturn(new AuthenticationResponse("token"));
-
+        RecaptchaResponse recaptchaResponse=new RecaptchaResponse(true,"","",0.0,"");
+        Mockito.when(recaptchaService.validateToken(Mockito.any())).thenReturn(recaptchaResponse);
         mockMvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/auth/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(jsonRequestBody)
+                                .header("recaptcha","dummy")
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("token"));

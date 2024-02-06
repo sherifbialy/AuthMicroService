@@ -1,6 +1,8 @@
 package com.sumerge.auth.config;
 
 
+import com.sumerge.auth.config.filters.JwtAuthenticationFilter;
+import com.sumerge.auth.config.filters.RecaptchaFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +32,9 @@ public class SecurityConfig {
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore( jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .addFilterBefore(recaptchaFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore( jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .build();
 

@@ -1,4 +1,4 @@
-package com.sumerge.auth.api;
+package com.sumerge.auth.api.DTO;
 
 
 import lombok.AllArgsConstructor;

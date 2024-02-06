@@ -1,4 +1,4 @@
-package com.sumerge.auth.config;
+package com.sumerge.auth.config.filters;
 
 import com.sumerge.auth.recaptcha.RecaptchaResponse;
 import com.sumerge.auth.recaptcha.RecaptchaService;
@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Import;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,11 +26,12 @@ public class RecaptchaFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,@NonNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getMethod().equals("POST") ) {
+        System.out.println(request.getRequestURI());
+        if(request.getMethod().equals("POST") &&!request.getRequestURI().contains("validate") ) {
             String recaptcha = request.getHeader("recaptcha");
 
             RecaptchaResponse recaptchaResponse = recaptchaService.validateToken(recaptcha);
-            recaptchaResponse.setSuccess(true);
+            //recaptchaResponse.setSuccess(true);
             if(!recaptchaResponse.isSuccess()) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid reCAPTCHA token");
                 return;

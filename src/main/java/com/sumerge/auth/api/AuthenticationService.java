@@ -1,14 +1,15 @@
 package com.sumerge.auth.api;
 
+import com.sumerge.auth.api.DTO.AuthenticationRequest;
+import com.sumerge.auth.api.DTO.AuthenticationResponse;
+import com.sumerge.auth.api.DTO.RegisterRequest;
 import com.sumerge.auth.config.JwtService;
 import com.sumerge.auth.user.Role;
 import com.sumerge.auth.user.User;
 import com.sumerge.auth.user.UserRepository;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

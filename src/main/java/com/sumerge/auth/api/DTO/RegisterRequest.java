@@ -1,4 +1,5 @@
-package com.sumerge.auth.api;
+package com.sumerge.auth.api.DTO;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
-    private String email;
+public class RegisterRequest {
+
+    private String firstName;
+    private String lastName;
+    private  String email;
     private String password;
 }
