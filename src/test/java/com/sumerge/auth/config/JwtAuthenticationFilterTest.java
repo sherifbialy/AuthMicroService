@@ -2,7 +2,8 @@ package com.sumerge.auth.config;
 
 
 
-import com.sumerge.auth.config.filters.JwtAuthenticationFilter;
+import com.sumerge.auth.security.JwtService;
+import com.sumerge.auth.security.filters.JwtAuthenticationFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

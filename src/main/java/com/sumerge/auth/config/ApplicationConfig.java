@@ -1,7 +1,7 @@
 package com.sumerge.auth.config;
 
 
-import com.sumerge.auth.user.UserRepository;
+import com.sumerge.auth.repository.boundary.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
