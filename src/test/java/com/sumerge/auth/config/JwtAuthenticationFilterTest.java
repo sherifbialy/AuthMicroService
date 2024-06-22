@@ -3,6 +3,7 @@ package com.sumerge.auth.config;
 
 
 import com.sumerge.auth.config.filters.JwtAuthenticationFilter;
+import com.sumerge.auth.control.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

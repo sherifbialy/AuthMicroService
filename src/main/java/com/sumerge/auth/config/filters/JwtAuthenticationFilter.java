@@ -1,6 +1,6 @@
 package com.sumerge.auth.config.filters;
 
-import com.sumerge.auth.config.JwtService;
+import com.sumerge.auth.control.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

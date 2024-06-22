@@ -1,4 +1,4 @@
-package com.sumerge.auth.recaptcha;
+package com.sumerge.auth.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

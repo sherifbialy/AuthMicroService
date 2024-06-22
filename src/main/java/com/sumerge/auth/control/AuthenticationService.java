@@ -1,12 +1,10 @@
-package com.sumerge.auth.api;
+package com.sumerge.auth.control;
 
-import com.sumerge.auth.api.DTO.AuthenticationRequest;
-import com.sumerge.auth.api.DTO.AuthenticationResponse;
-import com.sumerge.auth.api.DTO.RegisterRequest;
-import com.sumerge.auth.config.JwtService;
-import com.sumerge.auth.user.Role;
-import com.sumerge.auth.user.User;
-import com.sumerge.auth.user.UserRepository;
+import com.sumerge.auth.entity.AuthenticationRequest;
+import com.sumerge.auth.entity.AuthenticationResponse;
+import com.sumerge.auth.entity.RegisterRequest;
+import com.sumerge.auth.entity.Role;
+import com.sumerge.auth.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

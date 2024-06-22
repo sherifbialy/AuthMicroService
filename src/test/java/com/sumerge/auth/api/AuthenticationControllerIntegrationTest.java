@@ -3,19 +3,20 @@ package com.sumerge.auth.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import com.sumerge.auth.boundary.RecaptchaClient;
 import com.sumerge.auth.config.filters.JwtAuthenticationFilter;
 import com.sumerge.auth.config.filters.RecaptchaFilter;
-import com.sumerge.auth.recaptcha.RecaptchaResponse;
-import com.sumerge.auth.recaptcha.RecaptchaService;
+import com.sumerge.auth.entity.RecaptchaResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -40,8 +41,10 @@ public class AuthenticationControllerIntegrationTest {
 
         private MockMvc mockMvc;
 
-        @Mock
-    RecaptchaService recaptchaService;
+
+
+        @MockBean
+    RecaptchaClient recaptchaClient;
 
         @Autowired
         WebApplicationContext webApplicationContext;
@@ -81,10 +84,9 @@ public class AuthenticationControllerIntegrationTest {
                     "  \"password\": \"securePassword123\"\n" +
                     "}";
             RecaptchaResponse recaptchaResponse=new RecaptchaResponse(false,"","",0.0,"");
-           Mockito.when(recaptchaService.validateToken(Mockito.any())).thenReturn(recaptchaResponse);
-           // recaptchaResponse.setSuccess(false);
-            wireMockServer.stubFor(post("/recaptcha/api/siteverify").willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(objectMapper.writeValueAsString(recaptchaResponse))));
-            System.out.println(wireMockServer.baseUrl());
+
+            Mockito.when(recaptchaClient.verifyToken(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.status(401).body(recaptchaResponse));
+            //wireMockServer.stubFor(post("/recaptcha/api/siteverify").willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(objectMapper.writeValueAsString(recaptchaResponse))));
             mockMvc.perform(
                     MockMvcRequestBuilders.post("/api/auth/register")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -103,10 +105,10 @@ public class AuthenticationControllerIntegrationTest {
                 "  \"password\": \"securePassword123\"\n" +
                 "}";
        RecaptchaResponse recaptchaResponse=new RecaptchaResponse(true,"","",0.0,"");
+        Mockito.when(recaptchaClient.verifyToken(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.status(200).body(recaptchaResponse));
 
-        Mockito.when(recaptchaService.validateToken(Mockito.any())).thenReturn(recaptchaResponse);
         wireMockServer.stubFor(post("/recaptcha/api/siteverify").willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(objectMapper.writeValueAsString(recaptchaResponse))));
-        System.out.println(wireMockServer.baseUrl());
+
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/auth/register")
                                 .contentType(MediaType.APPLICATION_JSON)

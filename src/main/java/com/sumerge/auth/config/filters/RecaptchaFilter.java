@@ -1,7 +1,7 @@
 package com.sumerge.auth.config.filters;
 
-import com.sumerge.auth.recaptcha.RecaptchaResponse;
-import com.sumerge.auth.recaptcha.RecaptchaService;
+import com.sumerge.auth.entity.RecaptchaResponse;
+import com.sumerge.auth.control.RecaptchaService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +31,6 @@ public class RecaptchaFilter extends OncePerRequestFilter {
             String recaptcha = request.getHeader("recaptcha");
 
             RecaptchaResponse recaptchaResponse = recaptchaService.validateToken(recaptcha);
-            //recaptchaResponse.setSuccess(true);
             if(!recaptchaResponse.isSuccess()) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid reCAPTCHA token");
                 return;

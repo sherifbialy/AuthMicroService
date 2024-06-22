@@ -1,5 +1,6 @@
-package com.sumerge.auth.user;
+package com.sumerge.auth.control;
 
+import com.sumerge.auth.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,19 +1,18 @@
 package com.sumerge.auth.api;
 
 import com.sumerge.auth.TestConfig;
-import com.sumerge.auth.api.DTO.AuthenticationRequest;
-import com.sumerge.auth.api.DTO.AuthenticationResponse;
-import com.sumerge.auth.api.DTO.RegisterRequest;
-import com.sumerge.auth.config.filters.JwtAuthenticationFilter;
-import com.sumerge.auth.config.JwtService;
-import com.sumerge.auth.recaptcha.RecaptchaResponse;
-import com.sumerge.auth.recaptcha.RecaptchaService;
-import com.sumerge.auth.user.Role;
-import com.sumerge.auth.user.User;
+import com.sumerge.auth.control.AuthenticationService;
+import com.sumerge.auth.entity.AuthenticationRequest;
+import com.sumerge.auth.entity.AuthenticationResponse;
+import com.sumerge.auth.entity.RegisterRequest;
+import com.sumerge.auth.control.JwtService;
+import com.sumerge.auth.entity.RecaptchaResponse;
+import com.sumerge.auth.control.RecaptchaService;
+import com.sumerge.auth.entity.Role;
+import com.sumerge.auth.entity.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -45,8 +44,7 @@ class AuthenticationControllerTest {
     private AuthenticationService authenticationService;
 
 
-    @Mock
-    private JwtAuthenticationFilter jwtFilter;
+
 
     @Autowired
     JwtService service;
@@ -74,6 +72,7 @@ class AuthenticationControllerTest {
                 "  \"email\": \"john.doe@example.com\",\n" +
                 "  \"password\": \"securePassword123\"\n" +
                 "}";
+
         RecaptchaResponse recaptchaResponse=new RecaptchaResponse(true,"","",0.0,"");
         Mockito.when(recaptchaService.validateToken(Mockito.any())).thenReturn(recaptchaResponse);
         when(authenticationService.register(any(RegisterRequest.class))).thenReturn(new AuthenticationResponse("token"));

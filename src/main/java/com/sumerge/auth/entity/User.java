@@ -1,4 +1,4 @@
-package com.sumerge.auth.user;
+package com.sumerge.auth.entity;
 
 
 import jakarta.persistence.*;

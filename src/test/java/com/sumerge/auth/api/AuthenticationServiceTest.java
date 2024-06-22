@@ -1,10 +1,12 @@
 package com.sumerge.auth.api;
 
-import com.sumerge.auth.api.DTO.AuthenticationRequest;
-import com.sumerge.auth.api.DTO.AuthenticationResponse;
-import com.sumerge.auth.api.DTO.RegisterRequest;
-import com.sumerge.auth.config.*;
-import com.sumerge.auth.user.*;
+import com.sumerge.auth.control.AuthenticationService;
+import com.sumerge.auth.control.JwtService;
+import com.sumerge.auth.control.UserRepository;
+import com.sumerge.auth.entity.AuthenticationRequest;
+import com.sumerge.auth.entity.AuthenticationResponse;
+import com.sumerge.auth.entity.RegisterRequest;
+import com.sumerge.auth.entity.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +23,8 @@ class AuthenticationServiceTest {
     @Mock
     private UserRepository userRepository;
 
-
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @Mock
     private JwtService jwtService;

@@ -1,9 +1,10 @@
-package com.sumerge.auth.api;
+package com.sumerge.auth.boundary;
 
 
-import com.sumerge.auth.api.DTO.AuthenticationRequest;
-import com.sumerge.auth.api.DTO.AuthenticationResponse;
-import com.sumerge.auth.api.DTO.RegisterRequest;
+import com.sumerge.auth.control.AuthenticationService;
+import com.sumerge.auth.entity.AuthenticationRequest;
+import com.sumerge.auth.entity.AuthenticationResponse;
+import com.sumerge.auth.entity.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

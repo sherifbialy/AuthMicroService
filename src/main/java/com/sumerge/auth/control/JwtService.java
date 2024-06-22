@@ -1,4 +1,4 @@
-package com.sumerge.auth.config;
+package com.sumerge.auth.control;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

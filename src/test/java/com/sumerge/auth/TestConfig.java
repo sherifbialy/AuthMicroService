@@ -1,7 +1,7 @@
 package com.sumerge.auth;
 
 
-import com.sumerge.auth.config.JwtService;
+import com.sumerge.auth.control.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
